@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio Palabras Repetidas</title>
+</head>
+<body>
+    <p id="texto-entreda">
+        testeando testeando la cosa la cosa
+    </p>
+    <div id="resultados">
+        <h1>Resultados</h1>
+    </div>
+
+    <script>
+        //Objeto letra
+        function Letra(letra, cantidad=1){
+            this.letra = letra;
+            this.cantidad = cantidad;
+        };
+        //Objeto Palabra
+        function Palabra(palabra, cantidad=1){
+            this.palabra = palabra;
+            this.cantidad = cantidad;
+        };
+        //Funcion que busca y agrega palabra
+        function buscaPalabra(palabra, palabras){
+            var encontrado = false;
+            for (const p in palabras) {
+                if (palabras[p].palabra == palabra) {
+                    palabras[p].cantidad += 1;
+                    encontrado = true;
+                    break;
+                };
+            };
+            if(!encontrado){palabras.push(new Palabra(palabra))};
+        };
+        //Funcion que busca y agrega Palabra
+        function buscaLetra(letra, letras) {
+            var encontrado = false;
+            for (const l in letras) {
+                if(letras[l].letra == letra){
+                    letras[l].cantidad += 1;
+                    encontrado = true;
+                    break;
+                };
+            };
+            if(!encontrado){letras.push(new Letra(letra))};
+        };
+        //Funcion principal que cuenta letras
+        function contarLetra(){
+            var letras = [];
+            var str = (document.getElementById("texto-entreda").innerHTML).toString().trim().replace(/ /g,"").toLowerCase().split("");
+            for (const i of str) {
+                buscaLetra(i, letras);
+            };
+            //Construccion de html mediante js
+            var resultados = document.getElementById("resultados");
+            for (const l in letras) {
+                var strong = document.createElement("strong");
+                var span = document.createElement("span");
+                var p = document.createElement("p");
+                strong.appendChild(document.createTextNode("Letra "+letras[l].letra+": "));
+                span.appendChild(document.createTextNode(letras[l].cantidad));
+                p.appendChild(strong);
+                p.appendChild(span);
+                resultados.appendChild(p);
+            }
+        };
+        //Funcion principal que cuenta palabras
+        function contarPalabra() {
+            var str = (document.getElementById("texto-entreda").innerHTML).toString().trim().replace(/ /g,",").toLowerCase().split(",");
+            var palabras = [];
+            for (const p of str) {
+                buscaPalabra(p, palabras);
+            };
+            //Construccion de html mediante js
+            var resultados = document.getElementById("resultados");
+            for (const i in palabras) {
+                var p = document.createElement("p");
+                var strong = document.createElement("strong");
+                var span = document.createElement("span");
+                strong.appendChild(document.createTextNode("Palabra "+palabras[i].palabra+": "));
+                span.appendChild(document.createTextNode(palabras[i].cantidad));
+                p.appendChild(strong);
+                p.appendChild(span);
+                resultados.appendChild(p);
+            };
+        };
+        //Ejecucion de Funciones
+        contarLetra();
+        contarPalabra();
+    </script>
+</body>
+</html>
